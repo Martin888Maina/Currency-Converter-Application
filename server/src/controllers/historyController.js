@@ -1,6 +1,7 @@
 const prisma = require('../config/database');
 const { Parser } = require('json2csv');
 const { HISTORY_PAGE_SIZE } = require('../utils/constants');
+const { getRateHistory } = require('../services/exchangeRateService');
 
 // paginated list with optional filters
 async function getHistory(req, res, next) {
@@ -93,4 +94,32 @@ async function clearHistory(req, res, next) {
   }
 }
 
-module.exports = { getHistory, exportHistory, clearHistory };
+// rate trend data for the Charts page
+async function getRates(req, res, next) {
+  try {
+    const from = (req.query.from || 'USD').toUpperCase();
+    const to = (req.query.to || 'KES').toUpperCase();
+    const days = Math.min(90, Math.max(7, parseInt(req.query.days) || 30));
+
+    const series = await getRateHistory(from, to, days);
+
+    // summary stats — only calculate if we have data
+    let summary = null;
+    if (series.length > 0) {
+      const rates = series.map((p) => p.rate);
+      const min = Math.min(...rates);
+      const max = Math.max(...rates);
+      const avg = rates.reduce((a, b) => a + b, 0) / rates.length;
+      const first = rates[0];
+      const last = rates[rates.length - 1];
+      const change = ((last - first) / first) * 100;
+      summary = { min, max, avg, change };
+    }
+
+    res.json({ from, to, days, series, summary });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getHistory, exportHistory, clearHistory, getRates };

@@ -55,6 +55,10 @@ async function getRates(baseCurrency) {
       create: { baseCurrency, rates, fetchedAt },
     });
 
+    // store a daily snapshot so Charts can build historical trend data
+    // keyed as "USD:2026-03-04" — one row per base per day
+    await saveDailySnapshot(baseCurrency, rates, fetchedAt);
+
     return { rates, fromCache: false, cachedAt: fetchedAt.toISOString() };
   } catch (err) {
     // if the API is down, serve whatever stale data we have rather than crashing
@@ -69,6 +73,50 @@ async function getRates(baseCurrency) {
     }
     throw err;
   }
+}
+
+// write one snapshot row per day per base currency — skip if today's is already there
+async function saveDailySnapshot(baseCurrency, rates, fetchedAt) {
+  const dateStr = fetchedAt.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const snapshotKey = `${baseCurrency}:${dateStr}`;
+
+  try {
+    await prisma.cachedRate.upsert({
+      where: { baseCurrency: snapshotKey },
+      update: {},   // don't overwrite — first fetch of the day wins
+      create: { baseCurrency: snapshotKey, rates, fetchedAt },
+    });
+  } catch {
+    // non-critical — if this fails the main response still works fine
+  }
+}
+
+// build a time-series array for the Charts page
+async function getRateHistory(from, to, days) {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  // grab all daily snapshot rows for this base currency
+  const snapshots = await prisma.cachedRate.findMany({
+    where: {
+      baseCurrency: { startsWith: `${from}:` },
+      fetchedAt: { gte: since },
+    },
+    orderBy: { fetchedAt: 'asc' },
+  });
+
+  const series = snapshots
+    .map((s) => {
+      const rateVal = s.rates[to];
+      if (!rateVal) return null;
+      return {
+        date: s.fetchedAt.toISOString().slice(0, 10),
+        rate: Number(rateVal),
+      };
+    })
+    .filter(Boolean);
+
+  return series;
 }
 
 async function convert(from, to, amount) {
@@ -91,4 +139,4 @@ async function getCurrencies() {
   return Object.keys(rates).sort();
 }
 
-module.exports = { getRates, convert, getCurrencies };
+module.exports = { getRates, convert, getCurrencies, getRateHistory };
