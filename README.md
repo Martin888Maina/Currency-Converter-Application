@@ -6,14 +6,6 @@ The application is designed as a portfolio project demonstrating full-stack deve
 
 ---
 
-## Screenshot
-
-![Currency Converter Screenshot](docs/screenshot.png)
-
-*Screenshot placeholder — add your own screenshot to the docs/ folder after running the application.*
-
----
-
 ## Features
 
 **Real-Time Currency Conversion**
@@ -250,12 +242,6 @@ Each time a fresh API call is made, the server also writes a daily snapshot row 
 - Localization support (English and Swahili)
 - Unit and integration tests with Jest and React Testing Library
 - Production deployment: frontend on Vercel, backend on Railway, database on Supabase
-
----
-
-## Disclaimer
-
-Exchange rates displayed in this application are provided for informational purposes only and may not reflect real-time market rates. Do not rely on these rates for financial transactions.
 
 ---
 
