@@ -55,7 +55,7 @@ export default function Home() {
           <Row className="g-4">
             {features.map((f) => (
               <Col key={f.title} xs={12} sm={6} lg={3}>
-                <Card className="h-100 border-0 shadow-sm text-center p-3">
+                <Card className="h-100 border-0 shadow-sm text-center p-3 card-hover">
                   <Card.Body>
                     {f.icon}
                     <Card.Title className="fw-semibold mb-2">{f.title}</Card.Title>

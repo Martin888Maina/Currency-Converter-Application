@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Alert } from 'react-bootstrap';
-import { CurrencyProvider } from '../context/CurrencyContext';
+import { CurrencyProvider, useCurrencies } from '../context/CurrencyContext';
 import useConvert from '../hooks/useConvert';
 import CurrencySelect from '../components/converter/CurrencySelect';
 import AmountInput from '../components/converter/AmountInput';
@@ -8,8 +8,10 @@ import SwapButton from '../components/converter/SwapButton';
 import ConvertResult from '../components/converter/ConvertResult';
 import MultiCurrencyCompare from '../components/converter/MultiCurrencyCompare';
 import FavoritePairs from '../components/favorites/FavoritePairs';
+import SkeletonCard from '../components/common/SkeletonCard';
 
 function ConverterInner() {
+  const { loading: currenciesLoading, error: currenciesError } = useCurrencies();
   const {
     from, setFrom,
     to, setTo,
@@ -26,6 +28,28 @@ function ConverterInner() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, amount]);
+
+  // show skeleton while the currency list is loading on first render
+  if (currenciesLoading) {
+    return (
+      <Container className="py-4">
+        <h2 className="fw-bold mb-1">Currency Converter</h2>
+        <p className="text-muted mb-4">Live rates for 160+ currencies, updated every hour.</p>
+        <SkeletonCard lines={4} height={24} />
+      </Container>
+    );
+  }
+
+  // if the currency list couldn't load at all, show a friendly message
+  if (currenciesError) {
+    return (
+      <Container className="py-4">
+        <Alert variant="danger">
+          Could not load currency list. Please check your connection and refresh the page.
+        </Alert>
+      </Container>
+    );
+  }
 
   return (
     <Container className="py-4">
@@ -81,7 +105,7 @@ function ConverterInner() {
               <Button
                 variant="primary"
                 size="lg"
-                className="px-5"
+                className="px-5 btn-mobile-full"
                 onClick={convert}
                 disabled={loading}
               >
@@ -92,7 +116,7 @@ function ConverterInner() {
         </Card.Body>
       </Card>
 
-      {/* result card */}
+      {/* result */}
       <div className="mb-4">
         <ConvertResult result={result} loading={loading} />
       </div>

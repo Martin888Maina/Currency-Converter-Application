@@ -6,7 +6,7 @@ import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryTable from '../components/history/HistoryTable';
 import Pagination from '../components/history/Pagination';
 import ExportButton from '../components/history/ExportButton';
-import Loader from '../components/common/Loader';
+import SkeletonCard from '../components/common/SkeletonCard';
 import ErrorAlert from '../components/common/ErrorAlert';
 
 export default function History() {
@@ -18,19 +18,27 @@ export default function History() {
 
   useEffect(() => { load(); }, []);
 
+  function showToast(msg) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }
+
   async function handleClear() {
     await clear();
     setShowConfirm(false);
-    setToast('Conversion history cleared');
-    setTimeout(() => setToast(null), 3000);
+    showToast('Conversion history cleared');
+  }
+
+  function handleExportClick() {
+    showToast('CSV export started');
   }
 
   return (
     <Container className="py-4">
-      <div className="d-flex align-items-center justify-content-between mb-1">
+      <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
         <h2 className="fw-bold mb-0">Conversion History</h2>
         <div className="d-flex gap-2">
-          <ExportButton filters={filters} />
+          <ExportButton filters={filters} onExport={handleExportClick} />
           <Button
             variant="outline-danger"
             size="sm"
@@ -57,7 +65,7 @@ export default function History() {
       <Card className="border-0 shadow-sm">
         <Card.Body className="p-0">
           {loading ? (
-            <Loader message="Loading history..." />
+            <SkeletonCard lines={6} height={18} />
           ) : (
             <HistoryTable records={records} />
           )}
@@ -69,7 +77,7 @@ export default function History() {
         )}
       </Card>
 
-      {/* clear history confirmation */}
+      {/* clear history confirmation modal */}
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title className="fs-6 fw-bold">Clear All History?</Modal.Title>

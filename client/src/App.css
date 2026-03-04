@@ -6,20 +6,25 @@ body {
   color: #212529;
 }
 
-/* active nav link gets a primary color underline */
+/* active nav link gets a primary color */
 .nav-link.active {
   color: #0d6efd !important;
   font-weight: 600;
 }
 
-/* result card gets a slightly elevated look */
+/* nav link hover state */
+.nav-link:not(.active):hover {
+  color: #0d6efd !important;
+}
+
+/* result card elevated look */
 .result-card {
   border: none;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   border-radius: 0.75rem;
 }
 
-/* swap button spin animation on hover */
+/* swap button spin on hover */
 .swap-btn {
   transition: transform 0.3s ease;
 }
@@ -27,7 +32,7 @@ body {
   transform: rotate(180deg);
 }
 
-/* amount display in converter */
+/* big converted amount */
 .amount-display {
   font-size: 2rem;
   font-weight: 700;
@@ -37,22 +42,94 @@ body {
 /* favorite chip badges */
 .fav-chip {
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, transform 0.1s;
 }
 .fav-chip:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transform: translateY(-1px);
 }
 
-/* chart container keeps its aspect ratio */
+/* chart container */
 .chart-wrapper {
   width: 100%;
   min-height: 280px;
 }
 
-/* stale cache banner */
+/* stale cache warning strip */
 .stale-banner {
   background-color: #fff3cd;
   border-left: 4px solid #ffc107;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* skeleton shimmer animation */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton-card {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.skeleton-line {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* card hover lift */
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+/* accessibility — visible focus ring on interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* smooth fade-in for alert messages */
+.alert {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* mobile — give inputs a bit more breathing room */
+@media (max-width: 576px) {
+  .amount-display {
+    font-size: 1.5rem;
+  }
+
+  .result-card {
+    border-radius: 0.5rem;
+  }
+
+  /* full-width buttons on small screens */
+  .btn-mobile-full {
+    width: 100%;
+  }
+}
+
+/* tablet tweaks */
+@media (min-width: 577px) and (max-width: 767px) {
+  .amount-display {
+    font-size: 1.75rem;
+  }
 }
