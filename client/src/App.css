@@ -1,0 +1,58 @@
+/* global overrides on top of Bootstrap */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* active nav link gets a primary color underline */
+.nav-link.active {
+  color: #0d6efd !important;
+  font-weight: 600;
+}
+
+/* result card gets a slightly elevated look */
+.result-card {
+  border: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+}
+
+/* swap button spin animation on hover */
+.swap-btn {
+  transition: transform 0.3s ease;
+}
+.swap-btn:hover {
+  transform: rotate(180deg);
+}
+
+/* amount display in converter */
+.amount-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+/* favorite chip badges */
+.fav-chip {
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.fav-chip:hover {
+  opacity: 0.8;
+}
+
+/* chart container keeps its aspect ratio */
+.chart-wrapper {
+  width: 100%;
+  min-height: 280px;
+}
+
+/* stale cache banner */
+.stale-banner {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}

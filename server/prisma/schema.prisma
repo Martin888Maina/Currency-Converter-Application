@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ConversionHistory {
+  id           String   @id @default(uuid())
+  fromCurrency String
+  toCurrency   String
+  amount       Decimal
+  result       Decimal
+  rate         Decimal
+  createdAt    DateTime @default(now())
+
+  @@index([fromCurrency, toCurrency])
+  @@index([createdAt])
+}
+
+model FavoritePair {
+  id           String   @id @default(uuid())
+  fromCurrency String
+  toCurrency   String
+  createdAt    DateTime @default(now())
+
+  @@unique([fromCurrency, toCurrency])
+}
+
+model CachedRate {
+  id           String   @id @default(uuid())
+  baseCurrency String
+  rates        Json
+  fetchedAt    DateTime @default(now())
+
+  @@unique([baseCurrency])
+  @@index([fetchedAt])
+}
