@@ -7,6 +7,7 @@ import AmountInput from '../components/converter/AmountInput';
 import SwapButton from '../components/converter/SwapButton';
 import ConvertResult from '../components/converter/ConvertResult';
 import MultiCurrencyCompare from '../components/converter/MultiCurrencyCompare';
+import FavoritePairs from '../components/favorites/FavoritePairs';
 
 function ConverterInner() {
   const {
@@ -14,16 +15,15 @@ function ConverterInner() {
     to, setTo,
     amount, setAmount,
     result, loading, error, setError,
-    convert, swap,
+    convert, swap, applyPair,
   } = useConvert();
 
-  // auto-convert whenever the inputs change and are all valid
+  // auto-convert whenever inputs change and are all valid
   useEffect(() => {
     const parsed = parseFloat(amount);
     if (amount && !isNaN(parsed) && parsed > 0 && from && to) {
       convert();
     }
-    // only want this to fire on value changes, not on convert reference change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, amount]);
 
@@ -37,6 +37,9 @@ function ConverterInner() {
           {error}
         </Alert>
       )}
+
+      {/* favorite pairs strip — click a chip to auto-populate the dropdowns */}
+      <FavoritePairs from={from} to={to} onApplyPair={applyPair} />
 
       {/* main converter card */}
       <Card className="border-0 shadow-sm mb-4">
@@ -89,12 +92,12 @@ function ConverterInner() {
         </Card.Body>
       </Card>
 
-      {/* conversion result */}
+      {/* result card */}
       <div className="mb-4">
         <ConvertResult result={result} loading={loading} />
       </div>
 
-      {/* side-by-side multi-currency panel */}
+      {/* multi-currency comparison panel */}
       {from && (
         <MultiCurrencyCompare from={from} amount={amount} />
       )}
@@ -102,7 +105,6 @@ function ConverterInner() {
   );
 }
 
-// wrap in CurrencyProvider so all child components can pull the currency list
 export default function Converter() {
   return (
     <CurrencyProvider>

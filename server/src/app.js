@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', rateLimiter);
 
 app.use('/api', require('./routes/convertRoutes'));
-// app.use('/api/favorites', require('./routes/favoritesRoutes'));  — Phase 3
-// app.use('/api/history', require('./routes/historyRoutes'));       — Phase 3
+app.use('/api/favorites', require('./routes/favoritesRoutes'));
+app.use('/api/history', require('./routes/historyRoutes'));
 
 // health check so we can confirm the server is up
 app.get('/health', (req, res) => {
