@@ -15,7 +15,6 @@
   "license": "ISC",
   "description": "Express backend for Currency Converter Application",
   "dependencies": {
-    "@prisma/client": "^7.4.2",
     "axios": "^1.13.6",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
@@ -25,8 +24,9 @@
     "json2csv": "^6.0.0-alpha.2"
   },
   "devDependencies": {
+    "@prisma/client": "^6.19.2",
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.14",
-    "prisma": "^7.4.2"
+    "prisma": "^6.19.2"
   }
 }
