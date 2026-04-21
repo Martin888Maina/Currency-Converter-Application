@@ -1,9 +1,20 @@
 node_modules/
 .env
 .env.local
+.env.development
 .env.production
 dist/
 build/
 *.log
 .DS_Store
 claude.md
+CLAUDE.md
+
+# Deployment documentation (local only — do not push to GitHub)
+PORTFOLIO PROJECT DEPLOYMENT TO DIGITAL .md
+complete guide to get started and configure digital ocean.md
+converting development code to production code.md
+Digital Ocean Deployment Strategy.md
+digital ocean start up guide.md
+GITHUB strategy for portfolio project application to be deployed to digital ocean.md
+docs/
