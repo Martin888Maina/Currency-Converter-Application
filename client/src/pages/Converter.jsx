@@ -33,7 +33,7 @@ function ConverterInner() {
   if (currenciesLoading) {
     return (
       <Container className="py-4">
-        <h2 className="fw-bold mb-1">Currency Converter</h2>
+        <h2 className="fw-bold mb-1">Currency Converter Application</h2>
         <p className="text-muted mb-4">Live rates for 160+ currencies, updated every hour.</p>
         <SkeletonCard lines={4} height={24} />
       </Container>
@@ -53,7 +53,7 @@ function ConverterInner() {
 
   return (
     <Container className="py-4">
-      <h2 className="fw-bold mb-1">Currency Converter</h2>
+      <h2 className="fw-bold mb-1">Currency Converter Application</h2>
       <p className="text-muted mb-4">Live rates for 160+ currencies, updated every hour.</p>
 
       {error && (
