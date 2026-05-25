@@ -9,6 +9,10 @@ const app = express();
 // load env and validate before anything else
 const { CLIENT_URL } = require('./config/environment');
 
+// required when running behind a reverse proxy (Nginx); allows express-rate-limit
+// to read the real client IP from the X-Forwarded-For header
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(express.json());
