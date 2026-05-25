@@ -1,4 +1,4 @@
-// central error handler — keeps all error responses in the same shape
+// ensures all error responses share a consistent shape regardless of where the error originates
 const errorHandler = (err, req, res, next) => {
   const status = err.status || err.statusCode || 500;
   const message = err.message || 'Internal server error';

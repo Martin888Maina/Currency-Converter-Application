@@ -1,7 +1,6 @@
 const exchangeRateService = require('../services/exchangeRateService');
 const prisma = require('../config/database');
 
-// list every supported currency code
 async function getCurrencies(req, res, next) {
   try {
     const currencies = await exchangeRateService.getCurrencies();
@@ -11,7 +10,6 @@ async function getCurrencies(req, res, next) {
   }
 }
 
-// all rates for a given base currency
 async function getRates(req, res, next) {
   try {
     const base = (req.query.base || 'USD').toUpperCase();
@@ -22,7 +20,6 @@ async function getRates(req, res, next) {
   }
 }
 
-// convert and log to history
 async function convertCurrency(req, res, next) {
   try {
     const from = (req.query.from || '').toUpperCase();
@@ -56,7 +53,7 @@ async function convertCurrency(req, res, next) {
 
     const conversion = await exchangeRateService.convert(from, to, amount);
 
-    // log every conversion — fire and forget, don't let a db hiccup break the response
+    // fire and forget — a database failure must not delay or break the conversion response
     prisma.conversionHistory
       .create({
         data: {

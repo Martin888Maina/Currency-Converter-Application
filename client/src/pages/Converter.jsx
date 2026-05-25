@@ -29,7 +29,6 @@ function ConverterInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, amount]);
 
-  // show skeleton while the currency list is loading on first render
   if (currenciesLoading) {
     return (
       <Container className="py-4">
@@ -40,7 +39,6 @@ function ConverterInner() {
     );
   }
 
-  // if the currency list couldn't load at all, show a friendly message
   if (currenciesError) {
     return (
       <Container className="py-4">

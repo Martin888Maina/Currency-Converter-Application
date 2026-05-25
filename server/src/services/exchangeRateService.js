@@ -47,7 +47,6 @@ async function getRates(baseCurrency) {
     const rates = data.conversion_rates;
     const fetchedAt = new Date();
 
-    // update both caches
     cache.set(key, rates);
     await prisma.cachedRate.upsert({
       where: { baseCurrency },
@@ -91,12 +90,10 @@ async function saveDailySnapshot(baseCurrency, rates, fetchedAt) {
   }
 }
 
-// build a time-series array for the Charts page
 async function getRateHistory(from, to, days) {
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  // grab all daily snapshot rows for this base currency
   const snapshots = await prisma.cachedRate.findMany({
     where: {
       baseCurrency: { startsWith: `${from}:` },
@@ -133,7 +130,6 @@ async function convert(from, to, amount) {
   return { from, to, amount, result, rate, fromCache, stale: stale || false, cachedAt };
 }
 
-// returns a flat list of currency codes from a USD base fetch
 async function getCurrencies() {
   const { rates } = await getRates('USD');
   return Object.keys(rates).sort();

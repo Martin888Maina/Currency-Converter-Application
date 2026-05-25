@@ -37,7 +37,6 @@ export default function MultiCurrencyCompare({ from, amount }) {
 
   function addTarget() {
     if (targets.length >= MAX_COMPARE_CURRENCIES) return;
-    // pick a currency not already in the list
     const defaults = ['CAD', 'AUD', 'CHF', 'CNY', 'INR', 'SGD', 'MXN', 'BRL'];
     const next = defaults.find((c) => !targets.includes(c) && c !== from) || 'NGN';
     setTargets([...targets, next]);

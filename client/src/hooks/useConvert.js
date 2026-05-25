@@ -36,7 +36,6 @@ export default function useConvert() {
     setResult(null);
   }
 
-  // called when a favorite chip is clicked
   function applyPair(favFrom, favTo) {
     setFrom(favFrom);
     setTo(favTo);

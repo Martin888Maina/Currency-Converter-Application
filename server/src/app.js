@@ -14,14 +14,12 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// rate limit all API routes
 app.use('/api', rateLimiter);
 
 app.use('/api', require('./routes/convertRoutes'));
 app.use('/api/favorites', require('./routes/favoritesRoutes'));
 app.use('/api/history', require('./routes/historyRoutes'));
 
-// health check so we can confirm the server is up
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });

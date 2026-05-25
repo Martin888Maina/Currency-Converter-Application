@@ -3,7 +3,6 @@ const { Parser } = require('json2csv');
 const { HISTORY_PAGE_SIZE } = require('../utils/constants');
 const { getRateHistory } = require('../services/exchangeRateService');
 
-// paginated list with optional filters
 async function getHistory(req, res, next) {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -14,7 +13,6 @@ async function getHistory(req, res, next) {
     if (req.query.from) where.fromCurrency = req.query.from.toUpperCase();
     if (req.query.to) where.toCurrency = req.query.to.toUpperCase();
 
-    // date range filter
     if (req.query.startDate || req.query.endDate) {
       where.createdAt = {};
       if (req.query.startDate) where.createdAt.gte = new Date(req.query.startDate);
@@ -49,7 +47,6 @@ async function getHistory(req, res, next) {
   }
 }
 
-// stream a CSV file of all matching records
 async function exportHistory(req, res, next) {
   try {
     const where = {};
@@ -94,7 +91,6 @@ async function clearHistory(req, res, next) {
   }
 }
 
-// rate trend data for the Charts page
 async function getRates(req, res, next) {
   try {
     const from = (req.query.from || 'USD').toUpperCase();
@@ -103,7 +99,6 @@ async function getRates(req, res, next) {
 
     const series = await getRateHistory(from, to, days);
 
-    // summary stats — only calculate if we have data
     let summary = null;
     if (series.length > 0) {
       const rates = series.map((p) => p.rate);

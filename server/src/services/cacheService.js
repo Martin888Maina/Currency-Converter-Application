@@ -1,4 +1,4 @@
-// one hour — ExchangeRate-API only updates daily so this is plenty
+// 1-hour TTL; ExchangeRate-API updates daily, so hourly staleness is acceptable
 const TTL_MS = 60 * 60 * 1000;
 
 const store = new Map();

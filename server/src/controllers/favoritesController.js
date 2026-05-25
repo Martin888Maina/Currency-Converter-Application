@@ -28,7 +28,7 @@ async function addFavorite(req, res, next) {
       throw err;
     }
 
-    // upsert so clicking "add" twice doesn't explode
+    // upsert prevents duplicate-key errors when the same pair is submitted more than once
     const favorite = await prisma.favoritePair.upsert({
       where: { fromCurrency_toCurrency: { fromCurrency: from, toCurrency: to } },
       update: {},
@@ -37,7 +37,7 @@ async function addFavorite(req, res, next) {
 
     res.status(201).json({ favorite });
   } catch (err) {
-    // unique constraint — pair already exists
+    // P2002: Prisma unique constraint violation — concurrent request created the same pair first
     if (err.code === 'P2002') {
       return res.status(409).json({ error: 'This pair is already in your favorites' });
     }

@@ -1,4 +1,3 @@
-// formats a number with commas and up to `decimals` places
 export function formatNumber(value, decimals = 2) {
   if (value === null || value === undefined || isNaN(value)) return '—';
   return Number(value).toLocaleString('en-US', {
@@ -16,7 +15,6 @@ export function formatRate(rate) {
   });
 }
 
-// human-readable date + time
 export function formatDateTime(isoString) {
   if (!isoString) return '—';
   return new Date(isoString).toLocaleString('en-US', {
@@ -25,7 +23,6 @@ export function formatDateTime(isoString) {
   });
 }
 
-// just the date part for history filters
 export function formatDate(isoString) {
   if (!isoString) return '—';
   return new Date(isoString).toLocaleDateString('en-US', { dateStyle: 'medium' });
