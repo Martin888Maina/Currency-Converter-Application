@@ -11,6 +11,7 @@ required.forEach((key) => {
 
 module.exports = {
   PORT: process.env.PORT || 5000,
+  HOST: process.env.HOST || '127.0.0.1',
   NODE_ENV: process.env.NODE_ENV || 'development',
   EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
   DATABASE_URL: process.env.DATABASE_URL,
